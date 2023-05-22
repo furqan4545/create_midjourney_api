@@ -28,24 +28,11 @@ async def send_prompt_to_channel(channel_id: int, prompt: str):
 
 
 async def send_slash_command(channel_id: int, prompt: str):
-    # url = f"https://discord.com/api/v10/channels/{channel_id}/messages"
-
-    # payload = {'type': 2, 
-    #     'application_id': self.application_id,
-    #     'guild_id': self.guild_id,
-    #     'channel_id': self.channelid,
-    #     'session_id': self.session_id,
-    #     'data': {
-    #         'version': self.version,
-    #         # 'id': self.id,
-    #         'name': 'imagine',
-    #         'type': 1,
-    #         'options': [{'type': 3, 'name': 'prompt', 'value': str(prompt) + ' ' + self.flags}],
-    #         'attachments': []}
-    #         }
+    
     header = {
             'authorization': "NzQ3NTc4NzE2NDg5NTE1MDI4.G86rGd.iM6gzEawSuoTBz0pWaN62ssEOqXsT7MqYMwWic"
         }
+
 
     payload= {
         "type":2,
@@ -55,70 +42,16 @@ async def send_slash_command(channel_id: int, prompt: str):
         "options":[{"type":3,"name":"prompt","value":"create a picture of a cat"}],
         "application_command":{"id":"938956540159881230","application_id":"936929561302675456",
         "version":"1077969938624553050","default_member_permissions": None,
-        "type":1,"nsfw":False,"name":"imagine","description":"Create images with Midjourney","dm_permission":True,
+        "type":1,"nsfw":True,"name":"imagine","description":"Create images with Midjourney","dm_permission":True,
         "contexts":None,"options":[{"type":3,"name":"prompt","description":"The prompt to imagine","required":True}]},"attachments":[]},"nonce":"1102981542960955392"}
         
     r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header)
+    print("first: ", r.status_code)
     while r.status_code != 204:
         r = requests.post('https://discord.com/api/v9/interactions', json = payload , headers = header)
 
     print('prompt [{}] successfully sent!'.format(prompt))
-
-    # "https://discord.com/channels/1102908047459881002/1102908048122593302"
-
-    # Change "command_name" to the name of the Slash Command you want to call (e.g., "imagine")
-    # payload = {
-    #     "content": "",
-    #     "tts": False,
-    #     "components": [],
-    #     "embeds": [],
-    #     "allowed_mentions": {
-    #         "parse": []
-    #     },
-    #     "application_id": "1102924365391204363",
-    #     "data": {
-    #         "name": "imagine",
-    #         "type": 1,
-    #         "options": [
-    #             {
-    #                 "name": "prompt",
-    #                 "value": prompt,
-    #                 "type": 3
-    #             }
-    #         ]
-    #     }
-    # }
-    # payload = {
-    #     "content": "/imagine " + prompt,
-    #     "tts": False,
-    #     "components": [],
-    #     "embeds": [],
-    #     "allowed_mentions": {
-    #         "parse": []
-    #     },
-    #     "application_id": "1102924365391204363",
-    #     "data": {
-    #         "name": "imagine",
-    #         "type": 1,
-    #         "options": [
-    #             {
-    #                 "name": "prompt",
-    #                 "value": prompt,
-    #                 "type": 3
-    #             }
-    #         ]
-    #     }
-    # }
-
-    # headers = {
-    #     "Authorization": f"Bot {discord_token}",
-    #     "Content-Type": "application/json"
-    # }
-
-    # async with client.http._HTTPClient__session.post(url, data=json.dumps(payload), headers=headers) as resp:
-    #     if resp.status != 200:
-    #         print("Failed to send Slash Command:", await resp.text())
-
+    print(r.status_code)
 
 
 ##################################
